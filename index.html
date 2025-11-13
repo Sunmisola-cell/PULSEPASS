@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PulsePass - Security That Beats Within You</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: #121212;
+            overflow-x: hidden;
+        }
+        
+        .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* Screen transitions */
+        .screen {
+            display: none;
+            opacity: 0;
+            min-height: 100vh;
+        }
+        
+        .screen.active {
+            display: flex;
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Pulse animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+        
+        @keyframes pulseRing {
+            0% { 
+                transform: scale(1) translate(-50%, -50%); 
+                opacity: 0.5; 
+            }
+            100% { 
+                transform: scale(2) translate(-50%, -50%); 
+                opacity: 0; 
+            }
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 20px rgba(255, 76, 76, 0.6)); 
+            }
+            50% { 
+                filter: drop-shadow(0 0 40px rgba(255, 30, 136, 0.9)); 
+            }
+        }
+        
+        @keyframes breathe {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        .animate-pulse-custom {
+            animation: pulse 1.2s ease-in-out infinite;
+        }
+        
+        .animate-pulse-ring {
+            animation: pulseRing 3s ease-out infinite;
+        }
+        
+        .animate-heartbeat {
+            animation: heartbeat 1.2s ease-in-out infinite;
+        }
+        
+        .animate-glow {
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        .animate-breathe {
+            animation: breathe 5s ease-in-out infinite;
+        }
+        
+        /* Blur effect */
+        .blur-text {
+            filter: blur(8px);
+            transition: filter 0.5s ease;
+        }
+        
+        .blur-text.revealed {
+            filter: blur(0);
+        }
+        
+        /* Button hover effects */
+        button:not(:disabled):hover {
+            transform: scale(0.98);
+        }
+        
+        button {
+            transition: all 0.2s ease;
+        }
+        
+        /* Gradient button glow */
+        .glow-button {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glow-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.6s ease;
+        }
+        
+        .glow-button:hover::before {
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Main Container -->
+    <div class="relative w-full max-w-md mx-auto bg-[#121212] min-h-screen shadow-2xl">
+        
+        <!-- ==================== SPLASH SCREEN ==================== -->
+        <div id="splash" class="screen active flex-col items-center justify-between px-8 py-16 relative overflow-hidden">
+            <!-- Background glow -->
+            <div class="absolute top-1/4 left-1/2 w-96 h-96 rounded-full blur-3xl animate-breathe"
+                 style="background: radial-gradient(circle, rgba(255, 76, 76, 0.15) 0%, rgba(255, 30, 136, 0.1) 50%, transparent 70%); transform: translate(-50%, -50%);">
+            </div>
+            
+            <div class="flex-1 flex items-center justify-center z-10">
+                <div class="text-center">
+                    <!-- Logo -->
+                    <div class="mb-8 flex justify-center animate-glow">
+                        <svg width="160" height="160" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="100" cy="100" r="90" stroke="url(#splashGradient)" stroke-width="2" fill="none" opacity="0.3" class="animate-pulse" />
+                            <path d="M 70 60 L 70 140 M 70 60 Q 120 60 120 90 Q 120 120 70 120" 
+                                  stroke="url(#splashGradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                            <circle cx="95" cy="90" r="15" fill="url(#splashGradient)" class="animate-heartbeat" />
+                            <defs>
+                                <linearGradient id="splashGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#FF4C4C" />
+                                    <stop offset="50%" stop-color="#FF1E88" />
+                                    <stop offset="100%" stop-color="#7B61FF" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    
+                    <h1 class="text-[#F5F5F5] text-3xl font-montserrat tracking-wider mb-2">PulsePass</h1>
+                    <p class="text-sm text-[#F5F5F5]/70">Security That Beats Within You</p>
+                </div>
+            </div>
+            
+            <div class="flex gap-2 z-10">
+                <div class="w-2 h-2 rounded-full bg-[#FF4C4C] animate-pulse-custom"></div>
+                <div class="w-2 h-2 rounded-full bg-[#FF4C4C] animate-pulse-custom" style="animation-delay: 0.2s;"></div>
+                <div class="w-2 h-2 rounded-full bg-[#FF4C4C] animate-pulse-custom" style="animation-delay: 0.4s;"></div>
+            </div>
+        </div>
+
+        <!-- ==================== WELCOME SCREEN ==================== -->
+        <div id="welcome" class="screen flex-col items-center justify-between px-8 py-16 relative overflow-hidden">
+            <div class="absolute top-1/4 left-1/2 w-96 h-96 rounded-full blur-3xl animate-breathe"
+                 style="background: radial-gradient(circle, rgba(255, 76, 76, 0.15) 0%, rgba(255, 30, 136, 0.1) 50%, transparent 70%); transform: translate(-50%, -50%);">
+            </div>
+            
+            <div class="flex-1 flex flex-col items-center justify-center w-full max-w-sm z-10">
+                <!-- Logo with tagline -->
+                <div class="mb-16">
+                    <div class="flex justify-center mb-4">
+                        <svg width="140" height="140" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-glow">
+                            <circle cx="100" cy="100" r="90" stroke="url(#welcomeGradient)" stroke-width="2" fill="none" opacity="0.3" class="animate-pulse" />
+                            <path d="M 70 60 L 70 140 M 70 60 Q 120 60 120 90 Q 120 120 70 120" 
+                                  stroke="url(#welcomeGradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                            <circle cx="95" cy="90" r="15" fill="url(#welcomeGradient)" class="animate-heartbeat" />
+                            <defs>
+                                <linearGradient id="welcomeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#FF4C4C" />
+                                    <stop offset="50%" stop-color="#FF1E88" />
+                                    <stop offset="100%" stop-color="#7B61FF" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="text-center">
+                        <h1 class="text-[#F5F5F5] text-xl font-montserrat tracking-wider mb-1">PulsePass</h1>
+                        <p class="text-sm text-[#F5F5F5]/70">Security That Beats Within You</p>
+                    </div>
+                </div>
+                
+                <!-- CTA Button -->
+                <button onclick="goToScreen('login')" 
+                        class="w-full py-4 px-8 rounded-full text-[#F5F5F5] font-medium glow-button"
+                        style="background: linear-gradient(135deg, #FF4C4C 0%, #FF1E88 50%, #7B61FF 100%);">
+                    Continue with PulsePass
+                </button>
+                
+                <p class="text-[#F5F5F5]/60 text-center text-sm mt-6 leading-relaxed">
+                    Security That Beats Within You
+                </p>
+            </div>
+            
+            <div class="text-center z-10">
+                <p class="text-[#F5F5F5]/30 text-xs">Powered by biometric encryption technology</p>
+            </div>
+        </div>
+
+        <!-- ==================== LOGIN SCREEN ==================== -->
+        <div id="login" class="screen flex-col items-center justify-between px-8 py-12 relative overflow-hidden">
+            <div class="absolute top-1/3 left-1/2 w-96 h-96 rounded-full blur-3xl animate-breathe"
+                 style="background: radial-gradient(circle, rgba(123, 97, 255, 0.2) 0%, rgba(255, 30, 136, 0.15) 50%, transparent 70%); transform: translate(-50%, -50%);">
+            </div>
+            
+            <div class="flex-1 flex flex-col items-center justify-center w-full max-w-sm z-10">
+                <!-- Logo -->
+                <div class="mb-12">
+                    <svg width="100" height="100" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-glow">
+                        <circle cx="100" cy="100" r="90" stroke="url(#loginGradient)" stroke-width="2" fill="none" opacity="0.3" />
+                        <path d="M 70 60 L 70 140 M 70 60 Q 120 60 120 90 Q 120 120 70 120" 
+                              stroke="url(#loginGradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                        <circle cx="95" cy="90" r="15" fill="url(#loginGradient)" class="animate-heartbeat" />
+                        <defs>
+                            <linearGradient id="loginGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#FF4C4C" />
+                                <stop offset="50%" stop-color="#FF1E88" />
+                                <stop offset="100%" stop-color="#7B61FF" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                
+                <!-- Title -->
+                <div class="text-center mb-8">
+                    <h2 class="text-[#F5F5F5] text-2xl font-montserrat mb-2">Welcome to PulsePass</h2>
+                    <p class="text-[#F5F5F5]/60 text-sm">Enter your details to continue</p>
+                </div>
+                
+                <!-- Login Form -->
+                <form class="w-full space-y-4" onsubmit="event.preventDefault(); goToScreen('instruction');">
+                    <!-- Full Name -->
+                    <div>
+                        <label class="block text-[#F5F5F5]/60 text-sm mb-2">Full Name</label>
+                        <input type="text" 
+                               placeholder="John Doe" 
+                               required
+                               class="w-full px-4 py-3 rounded-xl bg-[#F5F5F5]/5 border border-[#F5F5F5]/10 text-[#F5F5F5] placeholder-[#F5F5F5]/30 focus:outline-none focus:border-[#FF1E88] transition-colors" />
+                    </div>
+                    
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-[#F5F5F5]/60 text-sm mb-2">Email Address</label>
+                        <input type="email" 
+                               placeholder="john@example.com" 
+                               required
+                               class="w-full px-4 py-3 rounded-xl bg-[#F5F5F5]/5 border border-[#F5F5F5]/10 text-[#F5F5F5] placeholder-[#F5F5F5]/30 focus:outline-none focus:border-[#FF1E88] transition-colors" />
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="pt-4">
+                        <button type="submit" 
+                                class="w-full py-4 px-8 rounded-full text-[#F5F5F5] font-medium glow-button"
+                                style="background: linear-gradient(135deg, #FF4C4C 0%, #FF1E88 50%, #7B61FF 100%);">
+                            Continue
+                        </button>
+                    </div>
+                    
+                    <!-- Sign Up Link -->
+                    <div class="text-center pt-2">
+                        <p class="text-[#F5F5F5]/50 text-sm">
+                            Don't have an account? 
+                            <a href="#" class="text-[#FF1E88] hover:text-[#FF4C4C] transition-colors">Sign up</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="text-center z-10">
+                <p class="text-[#F5F5F5]/30 text-xs">Secured by biometric encryption</p>
+            </div>
+        </div>
+
+        <!-- ==================== SCAN INSTRUCTION SCREEN ==================== -->
+        <div id="instruction" class="screen flex-col items-center justify-between px-8 py-16 relative overflow-hidden">
+            <div class="absolute top-1/2 left-1/2 w-96 h-96 rounded-full blur-3xl animate-breathe"
+                 style="background: radial-gradient(circle, rgba(255, 76, 76, 0.2) 0%, transparent 70%); transform: translate(-50%, -50%);">
+            </div>
+            
+            <div class="flex-1 flex flex-col items-center justify-center w-full max-w-sm z-10">
+                <!-- Animated fingerprint with pulse rings -->
+                <div class="relative mb-12">
+                    <div class="absolute top-1/2 left-1/2 w-48 h-48 rounded-full border-2 border-[#FF4C4C] animate-pulse-ring"></div>
+                    <div class="absolute top-1/2 left-1/2 w-48 h-48 rounded-full border-2 border-[#FF4C4C] animate-pulse-ring" style="animation-delay: 0.8s;"></div>
+                    <div class="absolute top-1/2 left-1/2 w-48 h-48 rounded-full border-2 border-[#FF4C4C] animate-pulse-ring" style="animation-delay: 1.6s;"></div>
+                    
+                    <!-- Fingerprint icon -->
+                    <div class="relative w-48 h-48 flex items-center justify-center animate-glow">
+                        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#FF4C4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Instructions -->
+                <div class="text-center mb-12">
+                    <h2 class="text-[#F5F5F5] text-2xl font-montserrat mb-4">Ready to Begin</h2>
+                    <p class="text-[#F5F5F5]/70 leading-relaxed">
+                        Place your finger on the sensor to begin scanning your unique heartbeat pattern
+                    </p>
+                </div>
+                
+                <!-- Begin Button -->
+                <button onclick="goToScreen('scanning')" 
+                        class="w-full py-4 px-8 rounded-full text-[#F5F5F5] font-medium glow-button"
+                        style="background: linear-gradient(135deg, #FF4C4C 0%, #FF1E88 50%, #7B61FF 100%);">
+                    Begin Scan
+                </button>
+            </div>
+            
+            <!-- Tips -->
+            <div class="space-y-2 z-10">
+                <div class="flex items-center justify-center gap-2 text-[#F5F5F5]/40 text-xs">
+                    <div class="w-1 h-1 rounded-full bg-[#FF4C4C]"></div>
+                    <span>Ensure your finger covers the entire sensor</span>
+                </div>
+                <div class="flex items-center justify-center gap-2 text-[#F5F5F5]/40 text-xs">
+                    <div class="w-1 h-1 rounded-full bg-[#FF4C4C]"></div>
+                    <span>Stay still during the 3 second scan</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SCANNING SCREEN ==================== -->
+        <div id="scanning" class="screen flex-col items-center justify-between px-8 py-16 relative overflow-hidden">
+            <div class="absolute top-1/2 left-1/2 w-[500px] h-[500px] rounded-full blur-3xl animate-breathe"
+                 style="background: radial-gradient(circle, rgba(255, 76, 76, 0.3) 0%, rgba(255, 30, 136, 0.15) 50%, transparent 70%); transform: translate(-50%, -50%);">
+            </div>
+            
+            <div class="flex-1 flex flex-col items-center justify-center w-full max-w-sm z-10">
+                <!-- Progress Circle -->
+                <div class="relative w-64 h-64 mx-auto mb-12">
+                    <svg class="absolute inset-0 w-full h-full -rotate-90">
+                        <circle cx="128" cy="128" r="120" stroke="rgba(245, 245, 245, 0.05)" stroke-width="8" fill="none" />
+                        <circle id="progressCircle" 
+                                cx="128" cy="128" r="120" 
+                                stroke="url(#progressGradient)" 
+                                stroke-width="8" 
+                                fill="none" 
+                                stroke-linecap="round"
+                                style="stroke-dasharray: 753.98; stroke-dashoffset: 753.98; transition: stroke-dashoffset 0.1s linear;" />
+                        <defs>
+                            <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#FF4C4C" />
+                                <stop offset="50%" stop-color="#FF1E88" />
+                                <stop offset="100%" stop-color="#7B61FF" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    
+                    <!-- Center pulse wave -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <svg width="180" height="120" viewBox="0 0 180 120" fill="none">
+                            <path id="pulseWave" 
+                                  d="M 10 60 L 40 60 L 50 40 L 60 80 L 70 30 L 80 90 L 90 60 L 100 50 L 110 70 L 120 35 L 130 85 L 140 60 L 170 60" 
+                                  stroke="#FF4C4C" 
+                                  stroke-width="3" 
+                                  stroke-linecap="round" 
+                                  fill="none"
+                                  style="stroke-dasharray: 400; stroke-dashoffset: 0;">
+                                <animate attributeName="stroke-dashoffset" from="0" to="-400" dur="2s" repeatCount="indefinite" />
+                            </path>
+                        </svg>
+                    </div>
+                    
+                    <!-- Progress percentage -->
+                    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-center">
+                        <div id="progressText" class="text-[#F5F5F5] text-2xl font-montserrat">0%</div>
+                    </div>
+                </div>
+                
+                <!-- Status text -->
+                <div class="text-center mb-8">
+                    <h3 class="text-[#F5F5F5] text-xl font-montserrat mb-2">Analyzing Heartbeat Pattern</h3>
+                    <p id="scanStatus" class="text-[#F5F5F5]/50 text-sm">Detecting pulse...</p>
+                </div>
+            </div>
+            
+            <!-- Keep finger on sensor reminder -->
+            <div class="flex items-center gap-2 text-[#F5F5F5]/40 text-xs z-10 animate-pulse-custom">
+                <div class="w-2 h-2 rounded-full bg-[#FF4C4C]"></div>
+                <span>Keep your finger on the sensor</span>
+            </div>
+        </div>
+
+        <!-- ==================== POST SCAN RESULT SCREEN ==================== -->
+        <div id="postscan" class="screen flex-col items-center justify-between px-8 py-16 relative overflow-hidden">
+            <!-- Background glow (changes based on success/failure) -->
+            <div id="resultGlow" 
+                 class="absolute top-1/3 left-1/2 w-96 h-96 rounded-full blur-3xl"
+                 style="background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 50%, transparent 70%); transform: translate(-50%, -50%);">
+            </div>
+            
+            <div class="flex-1 flex flex-col items-center justify-center w-full max-w-sm z-10">
+                <!-- Result Icon -->
+                <div class="relative mb-8">
+                    <div id="resultRing1" class="absolute top-1/2 left-1/2 w-32 h-32 rounded-full border-2 border-[#10b981] animate-pulse-ring"></div>
+                    <div id="resultRing2" class="absolute top-1/2 left-1/2 w-32 h-32 rounded-full border-2 border-[#10b981] animate-pulse-ring" style="animation-delay: 0.8s;"></div>
+                    
+                    <div id="resultIcon" 
+                         class="relative w-32 h-32 rounded-full flex items-center justify-center"
+                         style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Status message -->
+                <div class="text-center mb-10">
+                    <h2 id="resultTitle" class="text-[#F5F5F5] text-2xl font-montserrat mb-3">Verification Successful</h2>
+                    <p id="resultDesc" class="text-[#F5F5F5]/60 text-sm">Your heartbeat signature has been authenticated</p>
+                </div>
+                
+                <!-- Pulse ID Card (only shown on success) -->
+                <div id="pulseIdCard" 
+                     class="w-full rounded-3xl p-6 mb-8" 
+                     style="background: linear-gradient(135deg, rgba(255, 76, 76, 0.05) 0%, rgba(123, 97, 255, 0.05) 100%); backdrop-filter: blur(20px); border: 1px solid rgba(245, 245, 245, 0.1);">
+                    <div class="text-center mb-6">
+                        <p class="text-[#F5F5F5]/50 text-xs mb-3">Your Pulse ID</p>
+                        <div class="flex items-center justify-center gap-3">
+                            <div id="pulseIdText" class="text-[#F5F5F5] text-3xl tracking-wider font-montserrat blur-text">
+                                PP-9A73QX
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="revealBtn" 
+                            onclick="revealPulseId()" 
+                            class="w-full py-3 px-6 rounded-full text-[#F5F5F5] text-sm flex items-center justify-center gap-2 glow-button"
+                            style="background: linear-gradient(to right, #FF4C4C, #FF1E88);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        Reveal My Pulse ID
+                    </button>
+                </div>
+                
+                <!-- Action buttons -->
+                <div class="w-full space-y-3">
+                    <button id="proceedBtn" 
+                            onclick="handleProceed()" 
+                            class="w-full py-4 px-8 rounded-full text-[#F5F5F5] font-medium glow-button"
+                            style="background: linear-gradient(135deg, #FF4C4C 0%, #FF1E88 50%, #7B61FF 100%);">
+                        Proceed
+                    </button>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="goToScreen('welcome')" 
+                                class="py-3 px-6 rounded-full border-2 border-[#F5F5F5]/20 text-[#F5F5F5]/70 text-sm hover:border-[#F5F5F5]/40 hover:text-[#F5F5F5] transition-colors">
+                            Go Back
+                        </button>
+                        <button onclick="resetAndRescan()" 
+                                class="py-3 px-6 rounded-full border-2 border-[#FF4C4C]/50 text-[#FF4C4C] text-sm hover:border-[#FF4C4C] hover:bg-[#FF4C4C]/10 transition-colors">
+                            Rescan
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security note -->
+            <div class="text-center z-10">
+                <p class="text-[#F5F5F5]/30 text-xs">🔒 Your biometric data is encrypted and stored locally</p>
+            </div>
+        </div>
+
+        <!-- ==================== DASHBOARD SCREEN ==================== -->
+        <div id="dashboard" class="screen px-6 py-12 relative overflow-hidden flex-col">
+            <!-- Background gradient -->
+            <div class="absolute top-0 left-0 w-full h-80 opacity-20"
+                 style="background: linear-gradient(180deg, rgba(123, 97, 255, 0.3) 0%, transparent 100%);">
+            </div>
+            
+            <!-- Header with menu and logo -->
+            <div class="relative z-10 flex items-center justify-between mb-12">
+                <button class="w-10 h-10 rounded-full bg-[#F5F5F5]/5 flex items-center justify-center border border-[#F5F5F5]/10 hover:bg-[#F5F5F5]/10 transition-colors">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                
+                <svg width="70" height="70" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-glow">
+                    <circle cx="100" cy="100" r="90" stroke="url(#dashGradient)" stroke-width="2" fill="none" opacity="0.3" />
+                    <path d="M 70 60 L 70 140 M 70 60 Q 120 60 120 90 Q 120 120 70 120" 
+                          stroke="url(#dashGradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    <circle cx="95" cy="90" r="15" fill="url(#dashGradient)" class="animate-heartbeat" />
+                    <defs>
+                        <linearGradient id="dashGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FF4C4C" />
+                            <stop offset="50%" stop-color="#FF1E88" />
+                            <stop offset="100%" stop-color="#7B61FF" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                
+                <div class="w-10"></div>
+            </div>
+            
+            <!-- Pulse ID Card -->
+            <div class="relative z-10 rounded-3xl p-8 mb-6 overflow-hidden"
+                 style="background: linear-gradient(135deg, rgba(255, 76, 76, 0.15) 0%, rgba(255, 30, 136, 0.15) 50%, rgba(123, 97, 255, 0.15) 100%); backdrop-filter: blur(20px); border: 1px solid rgba(245, 245, 245, 0.1);">
+                <!-- Status badge -->
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#10b981]/20 border border-[#10b981]/30">
+                        <div class="w-2 h-2 rounded-full bg-[#10b981]"></div>
+                        <span class="text-[#10b981] text-xs">Verified • Active</span>
+                    </div>
+                </div>
+                
+                <!-- Pulse ID -->
+                <div class="mb-6">
+                    <p class="text-[#F5F5F5]/50 text-sm mb-2">Your Pulse ID</p>
+                    <div class="flex items-center justify-between">
+                        <h1 class="text-[#F5F5F5] text-4xl tracking-wider font-montserrat">PP-9A73QX</h1>
+                        <button onclick="copyToClipboard('PP-9A73QX')" 
+                                class="w-10 h-10 rounded-full bg-[#F5F5F5]/10 flex items-center justify-center hover:bg-[#F5F5F5]/20 transition-colors">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Heartbeat wave -->
+                <div class="mb-6">
+                    <svg width="100%" height="60" viewBox="0 0 320 60" fill="none">
+                        <path d="M 0 30 L 50 30 L 60 15 L 70 45 L 80 10 L 90 50 L 100 30 L 150 30 L 160 20 L 170 40 L 180 15 L 190 45 L 200 30 L 250 30 L 260 20 L 270 40 L 280 15 L 290 45 L 300 30 L 320 30" 
+                              stroke="#FF1E88" 
+                              stroke-width="3" 
+                              stroke-linecap="round" 
+                              fill="none"
+                              style="stroke-dasharray: 600; stroke-dashoffset: 0;">
+                            <animate attributeName="stroke-dashoffset" from="0" to="-600" dur="3s" repeatCount="indefinite" />
+                        </path>
+                    </svg>
+                </div>
+                
+                <!-- Metadata -->
+                <div class="grid grid-cols-3 gap-4 pt-4 border-t border-[#F5F5F5]/10">
+                    <div>
+                        <p class="text-[#F5F5F5]/40 text-xs mb-1">Created</p>
+                        <p class="text-[#F5F5F5] text-sm">Nov 10, 2025</p>
+                    </div>
+                    <div>
+                        <p class="text-[#F5F5F5]/40 text-xs mb-1">Last Verified</p>
+                        <p class="text-[#F5F5F5] text-sm">2 min ago</p>
+                    </div>
+                    <div>
+                        <p class="text-[#F5F5F5]/40 text-xs mb-1">Security</p>
+                        <p class="text-[#10b981] text-sm">High</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats -->
+            <div class="relative z-10 grid grid-cols-2 gap-3 mb-6">
+                <!-- Verifications -->
+                <div class="bg-[#F5F5F5]/5 backdrop-blur-sm border border-[#F5F5F5]/10 rounded-2xl p-5">
+                    <div class="w-10 h-10 rounded-full mb-2 flex items-center justify-center"
+                         style="background: linear-gradient(to bottom right, rgba(255, 76, 76, 0.2), rgba(255, 30, 136, 0.2));">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF1E88" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <p class="text-[#F5F5F5] text-2xl font-montserrat mb-1">47</p>
+                    <p class="text-[#F5F5F5]/50 text-xs">Verifications</p>
+                </div>
+                
+                <!-- Accuracy Rate -->
+                <div class="bg-[#F5F5F5]/5 backdrop-blur-sm border border-[#F5F5F5]/10 rounded-2xl p-5">
+                    <div class="w-10 h-10 rounded-full mb-2 flex items-center justify-center"
+                         style="background: linear-gradient(to bottom right, rgba(123, 97, 255, 0.2), rgba(255, 30, 136, 0.2));">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7B61FF" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <p class="text-[#F5F5F5] text-2xl font-montserrat mb-1">99.8%</p>
+                    <p class="text-[#F5F5F5]/50 text-xs">Accuracy Rate</p>
+                </div>
+            </div>
+            
+            <!-- Developer API Card -->
+            <button onclick="goToScreen('developer')" 
+                    class="relative z-10 w-full bg-[#F5F5F5]/5 backdrop-blur-sm border border-[#F5F5F5]/10 rounded-2xl p-5 flex items-center justify-between hover:bg-[#F5F5F5]/10 transition-colors">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center"
+                         style="background: linear-gradient(to bottom right, rgba(123, 97, 255, 0.2), rgba(255, 30, 136, 0.2));">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7B61FF" stroke-width="2">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <h3 class="text-[#F5F5F5] font-montserrat mb-1">Developer API</h3>
+                        <p class="text-[#F5F5F5]/50 text-sm">Integration tools for institutions</p>
+                    </div>
+                </div>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="2" opacity="0.3">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+            
+            <!-- Privacy note -->
+            <div class="relative z-10 mt-8 text-center">
+                <p class="text-[#F5F5F5]/30 text-xs leading-relaxed">
+                    🔒 Your biometric data is encrypted with AES-256<br />
+                    All processing happens locally on your device
+                </p>
+            </div>
+        </div>
+
+        <!-- ==================== DEVELOPER API SCREEN ==================== -->
+        <div id="developer" class="screen px-6 py-12 relative overflow-hidden flex-col">
+            <div class="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20"
+                 style="background: radial-gradient(circle, rgba(123, 97, 255, 0.5) 0%, transparent 70%);">
+            </div>
+            
+            <!-- Header -->
+            <div class="relative z-10 flex items-center gap-4 mb-10">
+                <button onclick="goToScreen('dashboard')" 
+                        class="w-10 h-10 rounded-full bg-[#F5F5F5]/5 flex items-center justify-center border border-[#F5F5F5]/10 hover:bg-[#F5F5F5]/10 transition-colors">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </button>
+                <div>
+                    <h2 class="text-[#F5F5F5] text-xl font-montserrat">Developer API</h2>
+                    <p class="text-[#F5F5F5]/50 text-sm">Integration tools for institutions</p>
+                </div>
+            </div>
+            
+            <!-- Description -->
+            <div class="relative z-10 mb-8">
+                <p class="text-[#F5F5F5]/70 text-sm leading-relaxed">
+                    PulsePass enables institutions to integrate heartbeat-based identity verification into their systems. 
+                    Our API provides secure, instant authentication without storing sensitive biometric data.
+                </p>
+            </div>
+            
+            <!-- API Key Card -->
+            <div class="relative z-10 bg-[#F5F5F5]/5 backdrop-blur-sm border border-[#F5F5F5]/10 rounded-2xl p-6 mb-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center"
+                         style="background: linear-gradient(to bottom right, rgba(255, 76, 76, 0.2), rgba(123, 97, 255, 0.2));">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF1E88" stroke-width="2">
+                            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-[#F5F5F5] text-sm">API Key</p>
+                        <p class="text-[#F5F5F5]/40 text-xs">Production environment</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3 bg-[#121212]/50 rounded-xl p-4 border border-[#F5F5F5]/5 mb-4">
+                    <code class="flex-1 text-[#F5F5F5] text-xs font-mono overflow-hidden">pk_live_PP9A73QX_84f2ac19d...</code>
+                    <button onclick="copyToClipboard('pk_live_PP9A73QX_84f2ac19d...')" 
+                            class="w-8 h-8 rounded-lg bg-[#F5F5F5]/10 flex items-center justify-center hover:bg-[#F5F5F5]/20 transition-colors flex-shrink-0">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <p class="text-[#F5F5F5]/40 text-xs">
+                    ⚠️ Keep this key secure. Never share it publicly or commit it to version control.
+                </p>
+            </div>
+            
+            <!-- Code Example -->
+            <div class="relative z-10 mb-6">
+                <div class="flex items-center gap-2 mb-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7B61FF" stroke-width="2">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                    <h3 class="text-[#F5F5F5] font-montserrat">Quick Integration</h3>
+                </div>
+                
+                <div class="bg-[#0a0a0a] border border-[#F5F5F5]/10 rounded-2xl p-5 overflow-x-auto">
+                    <pre class="text-[#F5F5F5]/80 text-xs font-mono leading-relaxed"><code>// Install the SDK
+npm install @pulsepass/sdk
+
+// Initialize
+import PulsePass from '@pulsepass/sdk';
+
+const pp = new PulsePass({
+  apiKey: 'pk_live_PP9A73QX_...'
+});
+
+// Verify a user
+const result = await pp.verify({
+  pulseId: 'PP-9A73QX'
+});
+
+if (result.verified) {
+  console.log('✅ Identity confirmed');
+  console.log('Match score:', result.score);
+}</code></pre>
+                </div>
+            </div>
+            
+            <!-- Features -->
+            <div class="relative z-10 space-y-3 mb-6">
+                <h3 class="text-[#F5F5F5] font-montserrat mb-4">Key Features</h3>
+                
+                <!-- Feature 1 -->
+                <div class="bg-[#F5F5F5]/5 backdrop-blur-sm border border-[#F5F5F5]/10 rounded-xl p-4 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                         style="background: linear-gradient(to bottom right, rgba(255, 76, 76, 0.2), rgba(123, 97, 255, 0.2));">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF1E88" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-[#F5F5F5] text-sm mb-1">Zero-Knowledge Architecture</p>
+                        <p class="text-[#F5F5F5]/50 text-xs">Biometric data never leaves the user's device</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-[#F5F5F5]/5 backdrop-blur-sm border border-[#F5F5F5]/10 rounded-xl p-4 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                         style="background: linear-gradient(to bottom right, rgba(255, 76, 76, 0.2), rgba(123, 97, 255, 0.2));">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF1E88" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-[#F5F5F5] text-sm mb-1">Real-Time Verification</p>
+                        <p class="text-[#F5F5F5]/50 text-xs">Authenticate users in under 3 seconds</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-[#F5F5F5]/5 backdrop-blur-sm border border-[#F5F5F5]/10 rounded-xl p-4 flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                         style="background: linear-gradient(to bottom right, rgba(255, 76, 76, 0.2), rgba(123, 97, 255, 0.2));">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF1E88" stroke-width="2">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-[#F5F5F5] text-sm mb-1">RESTful API</p>
+                        <p class="text-[#F5F5F5]/50 text-xs">Simple HTTP endpoints, works with any stack</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Documentation Link -->
+            <button class="relative z-10 w-full rounded-2xl p-5 text-center border hover:border-[#FF1E88]/40 transition-colors"
+                    style="background: linear-gradient(to right, rgba(255, 76, 76, 0.1), rgba(123, 97, 255, 0.1)); backdrop-filter: blur(20px); border-color: rgba(255, 30, 136, 0.2);">
+                <p class="text-[#F5F5F5] mb-1">Need Help Getting Started?</p>
+                <p class="text-[#FF1E88] text-sm">View Full Documentation →</p>
+            </button>
+            
+            <!-- Footer -->
+            <div class="relative z-10 mt-8 text-center">
+                <p class="text-[#F5F5F5]/30 text-xs">Enterprise plans available for high-volume integrations</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Global state
+        let currentScreen = 'splash';
+        let scanProgress = 0;
+        let scanInterval = null;
+        let isRevealed = false;
+        let isSuccessful = true;
+
+        // Initialize app - auto-start splash screen
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                goToScreen('welcome');
+            }, 3000);
+        });
+
+        // Navigate to screen
+        function goToScreen(screenName) {
+            // Hide current screen
+            const current = document.getElementById(currentScreen);
+            if (current) {
+                current.classList.remove('active');
+            }
+            
+            // Show new screen
+            currentScreen = screenName;
+            const next = document.getElementById(screenName);
+            if (next) {
+                next.classList.add('active');
+            }
+            
+            // Handle screen-specific initialization
+            if (screenName === 'scanning') {
+                startScanning();
+            } else if (screenName === 'postscan') {
+                // Reset reveal state
+                isRevealed = false;
+                const pulseIdText = document.getElementById('pulseIdText');
+                const revealBtn = document.getElementById('revealBtn');
+                if (pulseIdText) {
+                    pulseIdText.classList.add('blur-text');
+                    pulseIdText.classList.remove('revealed');
+                    pulseIdText.textContent = 'PP-9A73QX';
+                }
+                if (revealBtn) {
+                    revealBtn.classList.remove('hidden');
+                    revealBtn.style.display = 'flex';
+                }
+            }
+        }
+
+        // Start scanning process
+        function startScanning() {
+            scanProgress = 0;
+            const progressCircle = document.getElementById('progressCircle');
+            const progressText = document.getElementById('progressText');
+            const scanStatus = document.getElementById('scanStatus');
+            const maxDashOffset = 753.98;
+            
+            // Clear any existing interval
+            if (scanInterval) {
+                clearInterval(scanInterval);
+            }
+            
+            // Start progress animation
+            scanInterval = setInterval(() => {
+                scanProgress += 3.33; // 100% in 3 seconds
+                
+                if (scanProgress >= 100) {
+                    scanProgress = 100;
+                    clearInterval(scanInterval);
+                    
+                    // Randomly determine success or failure (70% success rate)
+                    isSuccessful = Math.random() > 0.3;
+                    
+                    setTimeout(() => {
+                        showPostScanResult(isSuccessful);
+                        goToScreen('postscan');
+                    }, 300);
+                }
+                
+                // Update progress circle
+                if (progressText) {
+                    progressText.textContent = Math.round(scanProgress) + '%';
+                }
+                if (progressCircle) {
+                    const dashOffset = maxDashOffset * (1 - scanProgress / 100);
+                    progressCircle.style.strokeDashoffset = dashOffset;
+                }
+                
+                // Update status text
+                if (scanStatus) {
+                    if (scanProgress < 30) {
+                        scanStatus.textContent = 'Detecting pulse...';
+                    } else if (scanProgress < 60) {
+                        scanStatus.textContent = 'Mapping cardiac signature...';
+                    } else if (scanProgress < 90) {
+                        scanStatus.textContent = 'Encrypting biometric data...';
+                    } else {
+                        scanStatus.textContent = 'Finalizing identity...';
+                    }
+                }
+            }, 100);
+        }
+
+        // Show post scan result
+        function showPostScanResult(success) {
+            const resultGlow = document.getElementById('resultGlow');
+            const resultIcon = document.getElementById('resultIcon');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultDesc = document.getElementById('resultDesc');
+            const resultRing1 = document.getElementById('resultRing1');
+            const resultRing2 = document.getElementById('resultRing2');
+            const pulseIdCard = document.getElementById('pulseIdCard');
+            const proceedBtn = document.getElementById('proceedBtn');
+            
+            if (success) {
+                // Success styling
+                if (resultGlow) {
+                    resultGlow.style.background = 'radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 50%, transparent 70%)';
+                }
+                if (resultIcon) {
+                    resultIcon.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                    resultIcon.innerHTML = '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5" /></svg>';
+                }
+                if (resultRing1) resultRing1.style.borderColor = '#10b981';
+                if (resultRing2) resultRing2.style.borderColor = '#10b981';
+                if (resultTitle) resultTitle.textContent = 'Verification Successful';
+                if (resultDesc) resultDesc.textContent = 'Your heartbeat signature has been authenticated';
+                if (pulseIdCard) pulseIdCard.style.display = 'block';
+                if (proceedBtn) {
+                    proceedBtn.textContent = 'Proceed';
+                    proceedBtn.onclick = () => goToScreen('dashboard');
+                }
+            } else {
+                // Failure styling
+                if (resultGlow) {
+                    resultGlow.style.background = 'radial-gradient(circle, rgba(239, 68, 68, 0.25) 0%, rgba(220, 38, 38, 0.15) 50%, transparent 70%)';
+                }
+                if (resultIcon) {
+                    resultIcon.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+                    resultIcon.innerHTML = '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+                }
+                if (resultRing1) resultRing1.style.borderColor = '#ef4444';
+                if (resultRing2) resultRing2.style.borderColor = '#ef4444';
+                if (resultTitle) resultTitle.textContent = 'Verification Failed';
+                if (resultDesc) resultDesc.textContent = 'Unable to verify your heartbeat pattern. Please try again';
+                if (pulseIdCard) pulseIdCard.style.display = 'none';
+                if (proceedBtn) {
+                    proceedBtn.textContent = 'Rescan';
+                    proceedBtn.onclick = resetAndRescan;
+                }
+            }
+        }
+
+        // Reveal Pulse ID
+        function revealPulseId() {
+            const pulseIdText = document.getElementById('pulseIdText');
+            const revealBtn = document.getElementById('revealBtn');
+            
+            if (pulseIdText) {
+                pulseIdText.classList.remove('blur-text');
+                pulseIdText.classList.add('revealed');
+            }
+            if (revealBtn) {
+                revealBtn.style.display = 'none';
+            }
+            
+            isRevealed = true;
+        }
+
+        // Handle proceed button
+        function handleProceed() {
+            if (isSuccessful) {
+                goToScreen('dashboard');
+            } else {
+                resetAndRescan();
+            }
+        }
+
+        // Reset and rescan
+        function resetAndRescan() {
+            goToScreen('scanning');
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Copied to clipboard: ' + text);
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        // Fallback copy method
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert('Copied to clipboard: ' + text);
+            } catch (err) {
+                alert('Failed to copy');
+            }
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html>
