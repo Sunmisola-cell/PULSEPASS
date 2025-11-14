@@ -13,3 +13,17 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Heart Monitor Animation */
+@keyframes heartMonitor {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-heart-monitor {
+  animation: heartMonitor 4s linear infinite;
+}
